@@ -1,0 +1,80 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+main {
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+}
+
+.calculator {
+  border: 1px red solid;
+  min-width: 300px;
+}
+
+.screen {
+  background-color: aliceblue;
+}
+.screen__input {
+  width: 100%;
+  min-height: 50px;
+  display: grid;
+  align-items: flex-end;
+  text-align: end;
+  font-size: 2rem;
+}
+.screen__output {
+  display: none;
+  width: 100%;
+  min-height: 50px;
+}
+
+.panel {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(4, 70px);
+  grid-template-rows: repeat(5, 70px);
+  gap: 10px;
+  justify-content: center;
+  grid-template-areas: "top-b top-b top-b operators" "numbers numbers numbers operators" "numbers numbers numbers operators" "numbers numbers numbers operators" "numbers numbers numbers operators";
+}
+.panel__top-buttons {
+  grid-area: top-b;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.panel__numbers {
+  grid-area: numbers;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.panel__numbers button {
+  border-radius: 50%;
+  font-size: 2rem;
+}
+.panel__numbers button:nth-of-type(1) {
+  grid-row: 4;
+  grid-column: 2;
+}
+.panel__operators {
+  grid-area: operators;
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  gap: 10px;
+}
+.panel__operators button {
+  border-radius: 50%;
+  font-size: 2rem;
+}
+
+/*# sourceMappingURL=style.css.map */
