@@ -21,29 +21,29 @@
                     <button type="button" id="clear" onclick="clearAll()">clear</button>
                 </div>
                 <div class="panel__numbers">
-                    <button type="button" class="number" onclick="numberClicked(event)">0</button>
-                    <button type="button" class="number" onclick="numberClicked(event)">1</button>
-                    <button type="button" class="number" onclick="numberClicked(event)">2</button>
-                    <button type="button" class="number" onclick="numberClicked(event)">3</button>
-                    <button type="button" class="number" onclick="numberClicked(event)">4</button>
-                    <button type="button" class="number" onclick="numberClicked(event)">5</button>
-                    <button type="button" class="number" onclick="numberClicked(event)">6</button>
-                    <button type="button" class="number" onclick="numberClicked(event)">7</button>
-                    <button type="button" class="number" onclick="numberClicked(event)">8</button>
-                    <button type="button" class="number" onclick="numberClicked(event)">9</button>
-                    <button type="button" class="number" onclick="numberClicked(event)">.</button>
+                    <button type="button" class="number" onclick="keyClicked(event)">0</button>
+                    <button type="button" class="number" onclick="keyClicked(event)">1</button>
+                    <button type="button" class="number" onclick="keyClicked(event)">2</button>
+                    <button type="button" class="number" onclick="keyClicked(event)">3</button>
+                    <button type="button" class="number" onclick="keyClicked(event)">4</button>
+                    <button type="button" class="number" onclick="keyClicked(event)">5</button>
+                    <button type="button" class="number" onclick="keyClicked(event)">6</button>
+                    <button type="button" class="number" onclick="keyClicked(event)">7</button>
+                    <button type="button" class="number" onclick="keyClicked(event)">8</button>
+                    <button type="button" class="number" onclick="keyClicked(event)">9</button>
+                    <button type="button" class="number" onclick="keyClicked(event)">.</button>
                 </div>
                 <div class="panel__operators">
-                    <button type="button">+</button>
-                    <button type="button">-</button>
-                    <button type="button">x</button>
-                    <button type="button">/</button>
-                    <button type="button">=</button>
+                    <button type="button" id="plus" onclick="keyClicked(event)">+</button>
+                    <button type="button" id="minus" onclick="keyClicked(event)">-</button>
+                    <button type="button" id="times" onclick="keyClicked(event)">x</button>
+                    <button type="button" id="divided" onclick="keyClicked(event)">/</button>
+                    <button type="button" id="equal" onclick="startProcess()">=</button>
                 </div>
             </div>
-        </div>3
+        </div>
     </main>
     <script src="./js/script.js"></script>
-    <script src="./js/dom.js"></script>
+    <!-- <script src="./js/dom.js"></script> -->
 </body>
 </html>

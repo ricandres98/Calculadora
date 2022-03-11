@@ -1,7 +1,7 @@
 function numberClicked(event){
-    for(tecla of teclasNumero){
-        if (tecla.elementoHTML === event.target){
-            screenInput.innerHTML += tecla.valor;
+    for(key of teclas){
+        if (key.elementoHTML === event.target){
+            screenInput.innerHTML += key.valor;
         }
     }
 }
