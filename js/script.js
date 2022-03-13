@@ -1,5 +1,6 @@
 const numberElement = document.getElementsByClassName("number");
 const screenInput = document.getElementById("input");
+const screenOutput = document.getElementById("output");
 const clear = document.getElementById("clear");
 
 function tecla(elementoHTML, valor) {
@@ -17,15 +18,11 @@ teclasNumero.push(new tecla(numberElement[10], '.'));
 const teclasOperadores = [
     new tecla(document.getElementById("plus"), '+'),
     new tecla(document.getElementById("minus"), '-'),
-    new tecla(document.getElementById("times"), 'x'),
+    new tecla(document.getElementById("times"), '*'),
     new tecla(document.getElementById("divided"), '/'),
 ];
 
 const teclas = [...teclasNumero, ...teclasOperadores];
-
-// for (item of teclasOperadores) {
-//     item.elementoHTML.addEventListener('click', numberClicked(Event));
-// }
 
 let inputString = screenInput.innerHTML;
 
@@ -51,15 +48,14 @@ function nextIsOperator(){
     return hayOperador;
 }
 
-
 function readInput(){
-    valores = []
-    operadores = []
+    valores = [];
+    operadores = [];
 
     inputString = screenInput.innerHTML;
-    let numberLength = String(parseInt(inputString)).length;
+    let numberLength = String(parseFloat(inputString)).length;
     if (inputString) {
-        valores.push(parseInt(inputString));
+        valores.push(parseFloat(inputString));
         while (numberLength < inputString.length) {
             if(nextIsOperator) {
                 operadores.push(inputString[numberLength]);
@@ -69,15 +65,61 @@ function readInput(){
             if(inputString.length < 1 && nextIsOperator){
                 ;
             }else {
-                valores.push(parseInt(inputString));
+                valores.push(parseFloat(inputString));
             }
-            numberLength = String(parseInt(inputString)).length;
+            numberLength = String(parseFloat(inputString)).length;
         }
         console.log(valores, operadores);
     } 
 }
 
 function realizarOperaciones() {
+    const isMultOrDiv = operadores.includes('*') || operadores.includes('/');
+    //Se encarga primero de resolver multiplicaciones y divisiones
+    if(isMultOrDiv) {
+        for(let i = 0; i < operadores.length; i++) {
+            switch (operadores[i]) {
+                case '*':
+                    valores[i] = valores[i] * valores[i+1];
+                    //Toma los valores que han sido multiplicados y los sustituye por su resultado,
+                    //corriendo todo el array una posición y eliminando el elemento final para acortarlo
+                    // Ej:2+3*8-6+10: [2,3,8,6,10] => [2,24,6,10]
+                    for (let j = i; j < valores.length - 2; j++) {
+                        valores[j+1] = valores [j + 2];
+                    }
+                    valores.pop();
+                    //Elimina del array de operadores el signo de la operación de multiplicación  
+                    //o división ya realizada y corre los valores del array un espacio
+                    // ['+','*','-','+'] => ['+','-','+']
+                    for (let j = i; j < operadores.length - 1; j++) {
+                        operadores[j] = operadores[j + 1];
+                    }
+                    operadores.pop();
+                    //Retrocede el valor de i en una unidad para volver a verificar la misma posición
+                    //en caso de que al correr los valores haya quedado en esta un '*' o  un'/'
+                    i--;
+                    console.log(valores, operadores);
+                    break;
+                case '/':
+                    if(valores[i+1] === 0) {
+                        return 'ERROR';
+                    } else {
+                        valores[i] = valores[i] / valores[i+1];
+                        for (j = i; j < valores.length - 2; j++) {
+                            valores[i+1] = valores [i+2];
+                        }
+                        valores.pop();
+                        for (let j = i; j < operadores.length - 1; j++) {
+                            operadores[j] = operadores[j + 1];
+                        }
+                        operadores.pop();
+                        i--;
+                    }
+                    console.log(valores, operadores);
+                    break;
+            }
+        }
+    }
     let acum = valores[0];
     for(let i = 0; i < operadores.length; i++) {
         switch (operadores[i]) {
@@ -89,21 +131,22 @@ function realizarOperaciones() {
                 acum -= valores[i+1];
                 console.log(acum);
                 break;
-            case 'x':
-                acum *= valores[i+1];
-                console.log(acum);
-                break;
-            case '/':
-                acum /= valores[i+1];
-                console.log(acum);
-                break;
+            default: 
+                console.log('Se pasó una multiplicación o división sin resolver');
         }
     }
+    return acum;
+}
+function printResult() {
+    screenOutput.style.display = 'grid';
+    screenOutput.innerHTML = realizarOperaciones();
 }
 
 function startProcess(){
     readInput();
-    realizarOperaciones();
+    const resultado = realizarOperaciones();
+    console.log(`El resultado es ${resultado}`);
+    printResult();
 }
 
 function keyClicked(event) {
@@ -115,6 +158,7 @@ function keyClicked(event) {
 }
 function clearAll() {
     screenInput.innerHTML = '';
+    screenOutput.style.display = 'none';
 }
 function erase() {
     let array = [];

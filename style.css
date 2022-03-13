@@ -35,6 +35,10 @@ main {
   display: none;
   width: 100%;
   min-height: 50px;
+  display: grid;
+  align-items: flex-end;
+  text-align: end;
+  font-size: 2rem;
 }
 
 .panel {
