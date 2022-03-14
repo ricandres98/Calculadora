@@ -3,12 +3,17 @@ const screenInput = document.getElementById("input");
 const screenOutput = document.getElementById("output");
 const clear = document.getElementById("clear");
 
+
 function tecla(elementoHTML, valor) {
     this.elementoHTML = elementoHTML;
     this.valor = valor;
 }
 
 const teclasNumero = [];
+let valores = [];
+let operadores = [];
+let ans = 0;
+let encadenado = false;
 
 for(let i = 0; i < 10; i++) {
     teclasNumero.push(new tecla(numberElement[i], i));
@@ -26,15 +31,39 @@ const teclas = [...teclasNumero, ...teclasOperadores];
 
 let inputString = screenInput.innerHTML;
 
-let valores = []
-let operadores = []
-
 document.addEventListener('click', () => {
     inputString = screenInput.innerHTML;
 });
-document.addEventListener('keyup', () => {
+
+document.addEventListener('keyup', (event) => {
     inputString = screenInput.innerHTML;
-    console.log(screenInput.innerHTML);
+    
+    console.log(event);
+    switch (event.key){
+        case 'Enter':
+            startProcess();
+            break;
+        case 'Backspace':
+            erase();
+            break;
+        case 'Escape':
+        case 'Delete':
+            clearAll();
+            break;
+        default:
+            for (keys of teclas) {
+                for (signo of teclasOperadores) {
+                    if (encadenado && event.key === signo.valor) {
+                        screenInput.innerHTML = ans;
+                        encadenado = false;
+                    }
+                }
+                if(event.key == keys.valor){
+                    screenInput.innerHTML += event.key;
+                    break;
+                }
+            }
+    } 
 });
 
 function nextIsOperator(){
@@ -49,7 +78,7 @@ function nextIsOperator(){
 }
 
 function readInput(){
-    valores = [];
+    valores = []; 
     operadores = [];
 
     inputString = screenInput.innerHTML;
@@ -83,14 +112,16 @@ function realizarOperaciones() {
                     valores[i] = valores[i] * valores[i+1];
                     //Toma los valores que han sido multiplicados y los sustituye por su resultado,
                     //corriendo todo el array una posición y eliminando el elemento final para acortarlo
-                    // Ej:2+3*8-6+10: [2,3,8,6,10] => [2,24,6,10]
+                    // Ej:2+3*8-6*10: [2,3,8,6,10] => [2,24,6,10]
+                    //                   ^ ^             ^
                     for (let j = i; j < valores.length - 2; j++) {
                         valores[j+1] = valores [j + 2];
                     }
                     valores.pop();
                     //Elimina del array de operadores el signo de la operación de multiplicación  
                     //o división ya realizada y corre los valores del array un espacio
-                    // ['+','*','-','+'] => ['+','-','+']
+                    // ['+','*','-','*'] => ['+','-','*']
+                    //       ^
                     for (let j = i; j < operadores.length - 1; j++) {
                         operadores[j] = operadores[j + 1];
                     }
@@ -105,6 +136,7 @@ function realizarOperaciones() {
                         return 'ERROR';
                     } else {
                         valores[i] = valores[i] / valores[i+1];
+                        // Ver comentarios arriba
                         for (j = i; j < valores.length - 2; j++) {
                             valores[i+1] = valores [i+2];
                         }
@@ -120,26 +152,36 @@ function realizarOperaciones() {
             }
         }
     }
-    let acum = valores[0];
+    ans = valores[0];
     for(let i = 0; i < operadores.length; i++) {
         switch (operadores[i]) {
             case '+':
-                acum += valores [i+1];
-                console.log(acum);
+                ans += valores [i+1];
+                console.log(ans);
                 break;
             case '-':
-                acum -= valores[i+1];
-                console.log(acum);
+                ans -= valores[i+1];
+                console.log(ans);
                 break;
             default: 
                 console.log('Se pasó una multiplicación o división sin resolver');
         }
     }
-    return acum;
+    if (typeof(ans) === 'number') {
+        encadenado = true;
+    }
+    return ans;
 }
+
 function printResult() {
-    screenOutput.style.display = 'grid';
-    screenOutput.innerHTML = realizarOperaciones();
+    if(typeof(realizarOperaciones()) === 'number') {
+        screenInput.style.fontStyle = 'italic';
+        screenOutput.style.display = 'grid';
+        screenOutput.innerHTML = realizarOperaciones();
+    } else if (realizarOperaciones() == 'ERROR'){
+        screenOutput.style.display = 'grid';
+        screenOutput.innerHTML = 'No se puede dividir entre 0';
+    }
 }
 
 function startProcess(){
@@ -151,6 +193,12 @@ function startProcess(){
 
 function keyClicked(event) {
     for(key of teclas){
+        for (signo of teclasOperadores) {
+            if (encadenado && event.target === signo.elementoHTML) {
+                screenInput.innerHTML = ans;
+                encadenado = false;
+            }
+        }
         if (key.elementoHTML === event.target){
             screenInput.innerHTML += key.valor;
         }
@@ -158,7 +206,9 @@ function keyClicked(event) {
 }
 function clearAll() {
     screenInput.innerHTML = '';
+    screenInput.style.fontStyle = 'normal';
     screenOutput.style.display = 'none';
+    encadenado = false;
 }
 function erase() {
     let array = [];

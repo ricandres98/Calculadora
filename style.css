@@ -8,37 +8,47 @@ html {
   font-size: 62.5%;
 }
 
+body {
+  font-family: "Roboto", sans-serif;
+  color: #012336;
+}
+
 main {
   width: 100%;
   min-height: 100vh;
   display: grid;
   place-content: center;
+  background-image: linear-gradient(to left bottom, #2fa9eb, #00bff4, #00d3f1, #00e6e3, #25f6ce);
 }
 
 .calculator {
-  border: 1px red solid;
   min-width: 300px;
+  max-width: 340px;
+  background-color: rgba(211, 226, 235, 0.7);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0px 5px 10px #00bff4;
 }
 
 .screen {
-  background-color: aliceblue;
+  padding: 20px 20px 0;
+  background-color: #d3e2eb;
 }
 .screen__input {
+  display: grid;
   width: 100%;
   min-height: 50px;
-  display: grid;
   align-items: flex-end;
   text-align: end;
-  font-size: 2rem;
+  font-size: 3rem;
 }
 .screen__output {
   display: none;
   width: 100%;
   min-height: 50px;
-  display: grid;
   align-items: flex-end;
   text-align: end;
-  font-size: 2rem;
+  font-size: 3rem;
 }
 
 .panel {
@@ -53,8 +63,24 @@ main {
 .panel__top-buttons {
   grid-area: top-b;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
+  justify-items: center;
+}
+.panel__top-buttons button {
+  border: none;
+  border-radius: 50%;
+  font-size: 2rem;
+  color: #012336;
+  background-color: #e8f7ff;
+  box-shadow: 0px 2px 5px #aaa;
+  width: 70px;
+}
+.panel__top-buttons button:active {
+  background-color: rgba(232, 247, 255, 0.8);
+}
+.panel__top-buttons button:first-of-type {
+  grid-column: 2;
 }
 .panel__numbers {
   grid-area: numbers;
@@ -63,8 +89,15 @@ main {
   gap: 10px;
 }
 .panel__numbers button {
+  border: none;
   border-radius: 50%;
   font-size: 2rem;
+  color: #012336;
+  background-color: #e8f7ff;
+  box-shadow: 0px 2px 5px #aaa;
+}
+.panel__numbers button:active {
+  background-color: rgba(232, 247, 255, 0.8);
 }
 .panel__numbers button:nth-of-type(1) {
   grid-row: 4;
@@ -77,8 +110,15 @@ main {
   gap: 10px;
 }
 .panel__operators button {
+  border: none;
   border-radius: 50%;
   font-size: 2rem;
+  color: #012336;
+  background-color: #e8f7ff;
+  box-shadow: 0px 2px 5px #aaa;
+}
+.panel__operators button:active {
+  background-color: rgba(232, 247, 255, 0.8);
 }
 
 /*# sourceMappingURL=style.css.map */
