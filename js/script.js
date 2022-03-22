@@ -52,10 +52,18 @@ document.addEventListener('keyup', (event) => {
             break;
         default:
             for (keys of teclas) {
-                for (signo of teclasOperadores) {
-                    if (encadenado && event.key === signo.valor) {
-                        screenInput.innerHTML = ans;
-                        encadenado = false;
+                if(encadenado){
+                    for (signo of teclasOperadores) {
+                        if (event.key === signo.valor) {
+                            screenInput.innerHTML = ans;
+                            encadenado = false;
+                        }
+                    }
+                    for (numero of teclasNumero) {
+                        if (event.key == numero.valor) {
+                            screenInput.innerHTML = '';
+                            encadenado = false;
+                        }
                     }
                 }
                 if(event.key == keys.valor){
@@ -170,7 +178,9 @@ function realizarOperaciones() {
     if (typeof(ans) === 'number') {
         encadenado = true;
     }
-    return ans;
+    // Esta forma de mandar el resultado permite redondear el resultado a 5 cifras decimales 
+    // para evitar las imprecisiones causadas por trabajar decimales en binario.
+    return Number(ans.toFixed(5));
 }
 
 function printResult() {
@@ -196,6 +206,12 @@ function keyClicked(event) {
         for (signo of teclasOperadores) {
             if (encadenado && event.target === signo.elementoHTML) {
                 screenInput.innerHTML = ans;
+                encadenado = false;
+            }
+        }
+        for (signo of teclasNumero) {
+            if (encadenado && event.target === signo.elementoHTML) {
+                screenInput.innerHTML = '';
                 encadenado = false;
             }
         }
